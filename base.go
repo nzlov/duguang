@@ -71,6 +71,14 @@ type Result struct {
 	PrismWordsInfo []WordInfo `json:"prism_wordsInfo"`
 	// 表格信息，如果不存在表格，则改字段内容为空
 	PrismTablesInfo []TableInfo `json:"prism_tablesInfo"`
+	// 高
+	Height int `json:"height"`
+	// 宽
+	Width     int `json:"width"`
+	OrgHeight int `json:"orgHeight"`
+	OrgWidth  int `json:"orgWidth"`
+	// 内容
+	Content string `json:"content"`
 }
 
 // 识别的文字的具体内容
@@ -93,6 +101,14 @@ type WordInfo struct {
 	ParagraphID int `json:"paragraphId"`
 	// 页id
 	PageID int `json:"pageId"`
+	// 范围：0-360,0表示向上，90表示向右，180表示向下，270度表示向左
+	Angle int `json:"angle"`
+	X     int `json:"x"`
+	Y     int `json:"y"`
+	// 高
+	Height int `json:"height"`
+	// 宽
+	Width int `json:"width"`
 }
 
 type Pos struct {

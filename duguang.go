@@ -3,6 +3,7 @@ package duguang
 import (
 	"bytes"
 	"encoding/json"
+	"fmt"
 	"io/ioutil"
 	"net/http"
 )
@@ -20,7 +21,7 @@ func (d *Duguang) SetAppcode(appcode string) {
 }
 
 func (d *Duguang) req(host string, data []byte) ([]byte, error) {
-
+	fmt.Println("duguang req:", host, ":", string(data))
 	req, err := http.NewRequest("POST", host, bytes.NewReader(data))
 	if err != nil {
 		return nil, err
@@ -37,7 +38,12 @@ func (d *Duguang) req(host string, data []byte) ([]byte, error) {
 
 	defer resp.Body.Close()
 
-	return ioutil.ReadAll(resp.Body)
+	data, err = ioutil.ReadAll(resp.Body)
+	if err != nil {
+		return nil, err
+	}
+	fmt.Println("duguang resp:", string(data))
+	return data, nil
 }
 
 // 通用文字识别－高精版接口文档
