@@ -3,7 +3,6 @@ package duguang
 import (
 	"bytes"
 	"encoding/json"
-	"fmt"
 	"io/ioutil"
 	"net/http"
 )
@@ -21,7 +20,6 @@ func (d *Duguang) SetAppcode(appcode string) {
 }
 
 func (d *Duguang) req(host string, data []byte) ([]byte, error) {
-	fmt.Println("duguang req:", host, ":", string(data))
 	req, err := http.NewRequest("POST", host, bytes.NewReader(data))
 	if err != nil {
 		return nil, err
@@ -42,7 +40,6 @@ func (d *Duguang) req(host string, data []byte) ([]byte, error) {
 	if err != nil {
 		return nil, err
 	}
-	fmt.Println("duguang resp:", string(data))
 	return data, nil
 }
 
