@@ -5,14 +5,22 @@ import (
 	"encoding/json"
 	"io/ioutil"
 	"net/http"
+	"time"
 )
 
 type Duguang struct {
 	appcode string
+	timeout time.Duration
 }
 
 func NewAppCodeDuguang(appcode string) *Duguang {
-	return &Duguang{appcode: appcode}
+	return NewDuguang(appcode, time.Second*10)
+}
+func NewDuguang(appcode string, timeout time.Duration) *Duguang {
+	return &Duguang{
+		appcode: appcode,
+		timeout: timeout,
+	}
 }
 
 func (d *Duguang) SetAppcode(appcode string) {
@@ -28,7 +36,9 @@ func (d *Duguang) req(host string, data []byte) ([]byte, error) {
 	req.Header.Set("Content-Type", "application/json; charset=UTF-8")
 	req.Header.Set("Authorization", "APPCODE "+d.appcode)
 
-	c := &http.Client{}
+	c := &http.Client{
+		Timeout: d.timeout,
+	}
 	resp, err := c.Do(req)
 	if err != nil {
 		return nil, err
