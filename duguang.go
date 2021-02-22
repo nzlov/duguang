@@ -3,9 +3,15 @@ package duguang
 import (
 	"bytes"
 	"encoding/json"
-	"io/ioutil"
+	"io"
 	"net/http"
 	"time"
+
+	"errors"
+)
+
+var (
+	Err_NoQuantity = errors.New("数量用尽")
 )
 
 type Duguang struct {
@@ -45,8 +51,12 @@ func (d *Duguang) req(host string, data []byte) ([]byte, error) {
 	}
 
 	defer resp.Body.Close()
+	switch resp.StatusCode {
+	case 403:
+		return nil, Err_NoQuantity
+	}
 
-	data, err = ioutil.ReadAll(resp.Body)
+	data, err = io.ReadAll(resp.Body)
 	if err != nil {
 		return nil, err
 	}
